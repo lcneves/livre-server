@@ -34,6 +34,7 @@ module.exports = function (options) {
   }
 
   // Setup of utilities
+  app.set('views', path.join(__dirname, 'views');
   app.set('view engine', 'pug');
 
   // Router begins here
