@@ -39,7 +39,7 @@ module.exports = function (options) {
 
   // Router begins here
   app.get('/', function (req, res) {
-    res.render('index', {});
+    res.render('index', options);
   });
 
   for (let path of staticPaths) {

@@ -5,8 +5,10 @@ html
 
     title Livre
 
-    link(rel='stylesheet' type='text/css' href='/stylesheets/livre3d.css')
+    each theme in themes
+      link(rel='stylesheet' type='text/css' href='/themes/' + theme + '/stylesheets/theme.css')
 
   body
 
-    script(type='text/javascript' src='/scripts/livre3d.js')
+    each theme in themes
+      script(type='text/javascript' src='/themes/' + theme + '/scripts/theme.js')
