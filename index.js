@@ -10,45 +10,43 @@
 
 'use strict';
 
-// Requirements
-const path = require('path');
-var express = require('express');
-var app = express();
+module.exports = function (options) {
 
-// Constant definitions
-const PORT = 34567;
-const STATIC_PATHS = [
-  {
-    get: '/public',
-    dir: path.join(__dirname, 'public')
-  },
-  {
-    get: '/scripts',
-    dir: path.join(__dirname, 'public', 'scripts')
-  },
-  {
-    get: '/stylesheets',
-    dir: path.join(__dirname, 'public', 'stylesheets')
-  },
-  {
-    get: '/images',
-    dir: path.join(__dirname, 'public', 'images')
+  // Requirements
+  const path = require('path');
+  var express = require('express');
+  var app = express();
+
+  // Constant definitions
+  const PORT = 34567;
+
+  var staticPaths = [];
+  for (let theme of options.themes) {
+    staticPaths.push({
+      get: '/themes/' + theme,
+      dir: path.join(
+        __dirname,
+        '..',
+        'livre-' + theme,
+        'resources'
+      )
+    });
   }
-];
 
-// Setup of utilities
-app.set('view engine', 'pug');
+  // Setup of utilities
+  app.set('view engine', 'pug');
 
-// Router begins here
-app.get('/', function (req, res) {
-  res.render('index', {});
-});
+  // Router begins here
+  app.get('/', function (req, res) {
+    res.render('index', {});
+  });
 
-for (let path of STATIC_PATHS) {
-  app.use(path['get'], express.static(path['dir']));
-}
+  for (let path of staticPaths) {
+    app.use(path['get'], express.static(path['dir']));
+  }
 
-// All set, let's listen!
-app.listen(PORT, function () {
+  // All set, let's listen!
+  app.listen(PORT, function () {
     console.log('Livre listening on port ' + PORT);
-});
+  });
+};
