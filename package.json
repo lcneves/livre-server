@@ -1,6 +1,6 @@
 {
   "name": "livre-server",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Node.js web server for the Livre project.",
   "main": "index.js",
   "scripts": {
