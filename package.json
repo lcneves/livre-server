@@ -1,0 +1,23 @@
+{
+  "name": "livre-server",
+  "version": "0.0.0",
+  "description": "Node.js web server for the Livre project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lcneves/livre-server.git"
+  },
+  "keywords": [
+    "Livre",
+    "server"
+  ],
+  "author": "Lucas Neves <lcneves@gmail.com> (https://www.lcneves.com)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/lcneves/livre-server/issues"
+  },
+  "homepage": "https://github.com/lcneves/livre-server#readme"
+}
