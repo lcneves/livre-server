@@ -20,19 +20,6 @@ module.exports = function (options) {
   // Constant definitions
   const PORT = 34567;
 
-  var staticPaths = [];
-  for (let theme of options.themes) {
-    staticPaths.push({
-      get: '/themes/' + theme.name,
-      dir: path.join(
-        __dirname,
-        '..',
-        'livre-' + theme.name,
-        'resources'
-      )
-    });
-  }
-
   // Setup of utilities
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'pug');
