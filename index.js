@@ -23,11 +23,11 @@ module.exports = function (options) {
   var staticPaths = [];
   for (let theme of options.themes) {
     staticPaths.push({
-      get: '/themes/' + theme,
+      get: '/themes/' + theme.name,
       dir: path.join(
         __dirname,
         '..',
-        'livre-' + theme,
+        'livre-' + theme.name,
         'resources'
       )
     });
@@ -38,12 +38,18 @@ module.exports = function (options) {
   app.set('view engine', 'pug');
 
   // Router begins here
-  app.get('/', function (req, res) {
-    res.render('index', options);
-  });
+  for (let theme of options.themes) {
 
-  for (let path of staticPaths) {
-    app.use(path['get'], express.static(path['dir']));
+    app.get(theme.route, function (req, res) {
+      res.render('index', { theme: theme.name });
+    });
+
+    app.use('/themes/' + theme.name, express.static(path.join(
+      __dirname,
+      '..',
+      theme.dirname,
+      'resources'
+    )));
   }
 
   // All set, let's listen!
