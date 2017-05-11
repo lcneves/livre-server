@@ -23,7 +23,8 @@
   "homepage": "https://github.com/lcneves/livre-server#readme",
   "dependencies": {
     "express": "^4.15.2",
-    "pug": "^2.0.0-rc.1"
+    "pug": "^2.0.0-rc.1",
+    "vhost": "^3.0.2"
   },
   "devDependencies": {
     "eslint": "latest"

@@ -14,10 +14,12 @@ module.exports = function (options) {
 
   // Requirements
   const path = require('path');
-  var express = require('express');
+  const vhost = require('vhost');
+  const express = require('express');
   var app = express();
 
   // Constant definitions
+  const HOSTNAME = options.hostname || '*.*';
   const PORT = options.port || 34567;
   const THEMES_DIR = options.themesDirectory || path.join(__dirname, '..');
 
@@ -27,17 +29,21 @@ module.exports = function (options) {
   app.set('view engine', 'pug');
 
   // Router begins here
+  var themeApps = {};
   for (let theme of options.themes) {
+    themeApps[theme.name] = express();
 
-    app.get(theme.route, function (req, res) {
-      res.render('index', { theme: theme.name });
+    themeApps[theme.name].get('/', function (req, res) {
+      res.render('index');
     });
     
-    app.use('/themes/' + theme.name, express.static(path.join(
-      THEMES_DIR,
-      theme.baseDirectory,
-      theme.publicDirectory
+    themeApps[theme.name].use('/resources', express.static(path.join(
+        THEMES_DIR,
+        theme.baseDirectory,
+        theme.publicDirectory
     )));
+
+    app.use(vhost(theme.subdomain + '.' + HOSTNAME, themeApps[theme.name]));
   }
 
   // All set, let's listen!
