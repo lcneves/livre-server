@@ -18,7 +18,9 @@ module.exports = function (options) {
   var app = express();
 
   // Constant definitions
-  const PORT = 34567;
+  const PORT = options.port || 34567;
+  const THEMES_DIR = options.themesDirectory || path.join(__dirname, '..');
+
 
   // Setup of utilities
   app.set('views', path.join(__dirname, 'views'));
@@ -30,12 +32,11 @@ module.exports = function (options) {
     app.get(theme.route, function (req, res) {
       res.render('index', { theme: theme.name });
     });
-
+    
     app.use('/themes/' + theme.name, express.static(path.join(
-      __dirname,
-      '..',
-      theme.dirname,
-      'resources'
+      THEMES_DIR,
+      theme.baseDirectory,
+      theme.publicDirectory
     )));
   }
 
