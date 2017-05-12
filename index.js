@@ -22,28 +22,34 @@ module.exports = function (options) {
   const HOSTNAME = options.hostname || '*.*';
   const PORT = options.port || 34567;
   const THEMES_DIR = options.themesDirectory || path.join(__dirname, '..');
+  const DEFAULT_STATIC_PATH = '/public';
+  const DEFAULT_PUBLIC_DIR = 'public';
 
 
-  // Setup of utilities
-  app.set('views', path.join(__dirname, 'views'));
-  app.set('view engine', 'pug');
-
-  // Router begins here
   var themeApps = {};
   for (let theme of options.themes) {
-    themeApps[theme.name] = express();
+    // Default options
+    let subdomain = theme.subdomain || theme.name,
+        staticPath = theme.staticPath || DEFAULT_STATIC_PATH,
+        baseDirectory = theme.baseDirectory || theme.name,
+        publicDirectory = theme.publicDirectory || DEFAULT_PUBLIC_DIR;
 
+
+    themeApps[theme.name] = express();
+    themeApps[theme.name]
+      .set('views', path.join(__dirname, 'views'))
+      .set('view engine', 'pug');
+
+    // Routing begins here
     themeApps[theme.name].get('/', function (req, res) {
-      res.render('index');
+      res.render('index', { staticPath: staticPath });
     });
     
-    themeApps[theme.name].use('/resources', express.static(path.join(
-        THEMES_DIR,
-        theme.baseDirectory,
-        theme.publicDirectory
+    themeApps[theme.name].use(staticPath, express.static(path.join(
+            THEMES_DIR, baseDirectory, publicDirectory
     )));
 
-    app.use(vhost(theme.subdomain + '.' + HOSTNAME, themeApps[theme.name]));
+    app.use(vhost(subdomain + '.' + HOSTNAME, themeApps[theme.name]));
   }
 
   // All set, let's listen!
@@ -51,3 +57,4 @@ module.exports = function (options) {
     console.log('Livre listening on port ' + PORT);
   });
 };
+
