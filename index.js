@@ -21,6 +21,7 @@ module.exports = function (options) {
   // Constant definitions
   const HOSTNAME = options.hostname || '*.*';
   const PORT = options.port || 34567;
+  const DEFAULT_TITLE = 'Livre';
   const THEMES_DIR = options.themesDirectory || path.join(__dirname, '..');
   const DEFAULT_STATIC_PATH = '/public';
   const DEFAULT_PUBLIC_DIR = 'public';
@@ -30,9 +31,13 @@ module.exports = function (options) {
   for (let theme of options.themes) {
     // Default options
     let subdomain = theme.subdomain || theme.name,
-        staticPath = theme.staticPath || DEFAULT_STATIC_PATH,
         baseDirectory = theme.baseDirectory || theme.name,
         publicDirectory = theme.publicDirectory || DEFAULT_PUBLIC_DIR;
+    let renderOptions = {
+      staticPath: theme.staticPath || DEFAULT_STATIC_PATH,
+      title: theme.title || DEFAULT_TITLE
+    };
+
 
 
     themeApps[theme.name] = express();
@@ -42,7 +47,7 @@ module.exports = function (options) {
 
     // Routing begins here
     themeApps[theme.name].get('/', function (req, res) {
-      res.render('index', { staticPath: staticPath });
+      res.render('index', renderOptions);
     });
     
     themeApps[theme.name].use(staticPath, express.static(path.join(
