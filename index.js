@@ -32,9 +32,10 @@ module.exports = function (options) {
     // Default options
     let subdomain = theme.subdomain || theme.name,
         baseDirectory = theme.baseDirectory || theme.name,
+        staticPath = theme.staticPath || DEFAULT_STATIC_PATH,
         publicDirectory = theme.publicDirectory || DEFAULT_PUBLIC_DIR;
     let renderOptions = {
-      staticPath: theme.staticPath || DEFAULT_STATIC_PATH,
+      staticPath: staticPath,
       title: theme.title || DEFAULT_TITLE
     };
 
